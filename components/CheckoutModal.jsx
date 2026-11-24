@@ -14,7 +14,7 @@ export default function CheckoutModal({ items, setItems, onClose }) {
   const [invoice, setInvoice] = useState("");
 
   const subtotal = items.reduce((s, i) => s + i.p.price * i.qty, 0);
-  const ship = subtotal === 0 ? 0 : subtotal >= 150000 && courier === "reg" ? 0 : COURIERS.find((c) => c.id === courier).p;
+  const ship = subtotal === 0 ? 0 : subtotal >= 100000 && courier === "reg" ? 0 : COURIERS.find((c) => c.id === courier).p;
   const fee = protect && subtotal ? 12500 : 0;
   const total = subtotal + ship + fee;
 
