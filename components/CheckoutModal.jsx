@@ -14,9 +14,8 @@ export default function CheckoutModal({ items, setItems, onClose }) {
   const [invoice, setInvoice] = useState("");
 
   const subtotal = items.reduce((s, i) => s + i.p.price * i.qty, 0);
-  const ship = subtotal === 0 ? 0 : subtotal >= 100000 && courier === "reg" ? 0 : COURIERS.find((c) => c.id === courier).p;
-  const fee = protect && subtotal ? 12500 : 0;
-  const total = subtotal + ship + fee;
+  const ship = subtotal === 0 ? 0 : COURIERS.find((c) => c.id === courier).p;
+  const total = subtotal + ship;
 
   const upd = (id, patch) => setItems(items.map((i) => (i.p.id === id ? { ...i, ...patch } : i)).filter((i) => i.qty > 0));
   const pay_ = () => {
@@ -101,14 +100,13 @@ export default function CheckoutModal({ items, setItems, onClose }) {
 
             <label className="flex items-start gap-3 border rounded-lg p-3 cursor-pointer">
               <input type="checkbox" checked={protect} onChange={(e) => setProtect(e.target.checked)} className="mt-1 accent-[#14362B]" />
-              <span className="text-sm flex-1"><b>Proteksi Tambahan</b><br /><span className="text-gray-500 text-xs">Perlindungan kerusakan &amp; kehilangan barang.</span></span>
-              <span className="text-sm font-medium">{rp(12500)}</span>
+              <span className="text-sm flex-1"><b>Proteksi Tambahan</b><br /><span className="text-gray-500 text-xs">Perlindungan kerusakan &amp; kehilangan barang tanpa biaya tambahan.</span></span>
+              <span className="text-sm font-medium">Gratis</span>
             </label>
 
             <div className="rounded-xl bg-[#F9FAF9] border p-4 space-y-2 text-sm">
               <div className="flex justify-between"><span className="text-gray-600">Subtotal Produk</span><span>{rp(subtotal)}</span></div>
-              <div className="flex justify-between"><span className="text-gray-600">Ongkos Kirim</span><span>{ship === 0 ? "Gratis" : rp(ship)}</span></div>
-              <div className="flex justify-between"><span className="text-gray-600">Biaya Layanan / Proteksi</span><span>{rp(fee)}</span></div>
+              <div className="flex justify-between"><span className="text-gray-600">Ongkir + Biaya Layanan</span><span>{ship === 0 ? "Gratis" : rp(ship)}</span></div>
               <div className="flex justify-between items-baseline border-t pt-3"><span className="font-semibold">Total Pembayaran</span><span className="text-2xl font-bold" style={{ color: G }}>{rp(total)}</span></div>
             </div>
 
